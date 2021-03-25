@@ -21,10 +21,7 @@ app.get('/websterBank/websterBankCallback', function(req,res){
 res.sendFile(path.join(__dirname+'/express/websterBankCallback.html'));
 //__dirname : It will resolve to your project folder.
 });
-const server = https.createServer({
-  key: fs.readFileSync('../../../Documents/Certs/localhost/key.pem'),
-  cert: fs.readFileSync('../../../Documents/Certs/localhost/cert.pem')
-},app);
-const port = 443;
-server.listen(port);
-console.debug('Server listening on port ' + port);
+const server = https.createServer(app);
+// const port = 443;
+// server.listen(port);
+// console.debug('Server listening on port ' + port);
