@@ -1,8 +1,8 @@
-const https = require('https');
+// const https = require('https');
 const express = require('express');
 const path = require('path');
 const app = express();
-const fs = require('fs');
+// const fs = require('fs');
 // const options = {
 //   key: fs.readFileSync('../../../Documents/Certs/localhost/privkey.pem'),
 //   cert: fs.readFileSync('../../../Documents/Certs/localhost/cert.pem')
@@ -21,7 +21,7 @@ app.get('/websterBank/websterBankCallback', function(req,res){
 res.sendFile(path.join(__dirname+'/express/websterBankCallback.html'));
 //__dirname : It will resolve to your project folder.
 });
-const server = https.createServer(app);
+// const server = https.createServer(app);
 var port = process.env.PORT || 8080;
-server.listen(port);
+app.listen(port);
 console.debug('Server listening on port '+port);
