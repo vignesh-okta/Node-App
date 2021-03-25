@@ -22,6 +22,6 @@ res.sendFile(path.join(__dirname+'/express/websterBankCallback.html'));
 //__dirname : It will resolve to your project folder.
 });
 const server = https.createServer(app);
-const port = 443;
-server.listen(port);
-console.debug('Server listening on port ' + port);
+// const port = 443;
+server.listen();
+console.debug('Server listening on port ');
