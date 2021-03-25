@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Welcome to Okta</title>
+	<!-- Okta Sign-In Widget: Core js and css -->
+  <!-- <script src="https://global.oktacdn.com/okta-signin-widget/3.8.1/js/okta-sign-in.min.js" type="text/javascript"></script>
+
+  <link href="https://global.oktacdn.com/okta-signin-widget/3.8.1/css/okta-sign-in.min.css" type="text/css" rel="stylesheet"/> -->
+  <!-- Latest CDN production Javascript and CSS -->
+  <script src="https://global.oktacdn.com/okta-auth-js/4.8.0/okta-auth-js.min.js" type="text/javascript"></script>
+  <script
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+   body {
+      background-image: url("img/bg.jpeg");
+      background-size: cover;
+    }
+    #okta-sign-in .okta-sign-in-header {
+      background-color: #FFFFFF;
+    }
+    #okta-sign-in .auth-content {
+      background-color: #FFFFFF;
+      color: #000000;
+    }
+    #okta-sign-in .okta-form-title{
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+  <div class="title"></div>
+  <hr>
+  <!-- <div class="title">It would be awesome to have <br> a login form here</div> -->
+  <script>
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+        console.log(results);
+    return decodeURIComponent(results[2]);
+  }
+  </script>
+  <div id="okta-login-container"></div>
+
+  <div class="footer">
+    Copyright 2010-2020 Okta Ice. All rights reserved.
+  </div>
+
+  <div class="editable" contenteditable="true"  id="idToken">
+  </div>
+  <div class="editable" contenteditable="true" id="accessToken">
+  </div>
+  <div class="editable" contenteditable="true" id="refreshToken">
+  </div>
+
+
+  <div class="logoutForm">
+    <table>
+      <tr>
+        <td></td>
+        <td><button id="logoutsubmit">Logout</button></td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="refreshTokenForm">
+    <table>
+      <tr>
+        <td></td>
+        <td><button id="refreshtokenSubmit">refreshToken</button></td>
+      </tr>
+    </table>
+  </div>
+  <script type="text/javascript">
+        var config = {
+          "redirectUri": "http://localhost/websterBank/websterBankCallback",
+          "issuer": "https://vigneshl.okta.com/oauth2/default",
+          "clientId": "0oaaev18b8ILWObsx2p7",
+          "pkce": true,
+          "scopes": [
+            "openid",
+            "offline_access"
+          ],
+          "responseType": [
+            "code"
+          ],
+          "cookies": {
+            "secure": true
+          },
+          "tokenManager": {
+            "autoRenew": false,
+            "storage": "localStorage"
+          }
+        }
+      var authClient = new OktaAuth(config);
+      // authClient.session.get().then(function (res) {
+      //    // Session exists, show logged in state.
+      //    if (res.status === 'ACTIVE') {
+           // console.log('Welcome back, ' + res.login);
+           var validationOptions = {
+             issuer: 'https://vigneshl.okta.com/oauth2/default'
+           };
+           authClient.tokenManager.get('idToken')
+             .then(function(token) {
+               console.log('verify the idToken');
+               authClient.token.verify(token,validationOptions)
+               .then(function() {
+                 // the idToken is valid
+                 console.log("id token is valid")
+                 var myidToken = $("#idToken");
+                 authClient.tokenManager.get('idToken')
+                   .then(function(token) {
+                      myidToken.html(token.value);
+                     })
+                 var myaccessToken = $("#accessToken");
+                 authClient.tokenManager.get('accessToken')
+                   .then(function(token) {
+                      myaccessToken.html(token.value);
+                     })
+                 var myrefreshToken = $("#refreshToken");
+                 authClient.tokenManager.get('refreshToken')
+                   .then(function(token) {
+                      myrefreshToken.html(token.value);
+                     })
+                 $('.logoutForm').show();
+                 $('.refreshTokenForm').show();
+                 return;
+               })
+               .catch(function(err) {
+                 // handle AuthSdkError
+                 console.log(err);
+                 if(token) {
+                 authClient.tokenManager.clear();
+                 window.location.replace('http://localhost');
+                 return;
+               } else {
+                  authClient.token.parseFromUrl({
+                    scopes: ['openid', 'offline_access'],
+                  }).then(function(res) {
+                    var state = res.state; // passed to getWithRedirect(), can be any string
+                    console.log("state is::"+state);
+                    // manage token or tokens
+                    var tokens = res.tokens;
+                    // authClient.tokenManager.setTokens(tokens);
+                   console.log(tokens.refreshToken)
+                    // authClient.tokenManager.setTokens(tokens);
+                    console.log('print idToken'+tokens.idToken);
+                    authClient.tokenManager.add('idToken', tokens.idToken);
+                    console.log('idToken added to TokenStore');
+                    console.log('print accessToken'+tokens.accessToken);
+                    authClient.tokenManager.add('accessToken', tokens.accessToken);
+                    console.log('accessToken added to TokenStore');
+                    authClient.tokenManager.add('refreshToken', tokens.refreshToken);
+                    console.log('refreshToken added to TokenStore');
+
+                    // var input = document.createElement('textarea');
+                    // input.name = 'idToken';
+                    // input.maxLength = 10000;
+                    // input.cols = 80;
+                    // input.rows = 40;
+                    //
+                    // input.className = 'myCustomTextarea';
+
+                    var myidToken = $("#idToken");
+
+                    myidToken.html(tokens.idToken.value);
+
+
+                    var myaccessToken = $("#accessToken");
+                    myaccessToken.html(tokens.accessToken.value);
+
+
+                    var myrefreshToken = $("#refreshToken");
+
+                    myrefreshToken.html(tokens.refreshToken.value);
+                   $('.logoutForm').show();
+                    $('.refreshTokenForm').show();
+
+                  }).catch(function(error) {
+                    console.error(error);
+                  });
+                }
+               });
+             })
+             .catch(function(err) {
+               // OAuth Error
+
+             });
+
+         //   return;
+         // }
+         // No session, show the login form
+         // oktaSignIn.renderEl(
+         //   {el: '#okta-login-container'},
+         //   function success(res) {
+         //     // Nothing to do in this case, the widget will automatically redirect
+         //     // the user to Okta for authentication, then back to this page if successful
+         //   },
+         //   function error(err) {
+         //     // handle errors as needed
+         //     console.error(err);
+         //   }
+         // );
+       // });
+
+       $('#logoutsubmit').click(async function() {
+
+             var authClient = new OktaAuth(config);
+
+             // await authClient.revokeAccessToken();
+
+             // In this case, the ID token is stored under the 'myIdToken' key
+             // const idToken = await authClient.tokenManager.get('myIdToken');
+
+             // const accessToken = await authClient.tokenManager.get('myAccessToken');
+
+             authClient.closeSession()
+               .then(() => {
+                 console.log('Closed the session succesfully');
+
+                 authClient.tokenManager.clear();
+                 window.location.replace('http://localhost');
+                 return;
+               })
+               .catch(e => {
+                 console.log(e);
+                 if (e.xhr && e.xhr.status === 429) {
+                   // Too many requests
+                 }
+               })
+
+
+       });
+
+       $('#refreshtokenSubmit').click(async function() {
+
+             var authClient = new OktaAuth(config);
+
+             // await authClient.revokeAccessToken();​
+             // In this case, the ID token is stored under the 'myIdToken' key
+             // const idToken = await authClient.tokenManager.get('myIdToken');
+
+             // const accessToken = await authClient.tokenManager.get('myAccessToken');
+
+             // Because the renew() method is async, you can wait for it to complete
+           // by using the returned Promise:
+
+           authClient.tokenManager.renew('refreshToken')
+           .then(function (newToken) {
+             console.log("test")
+             console.log(newToken);
+             location.reload();
+             return;
+           });
+
+           //
+           // location.reload();
+           // return;
+
+         });
+
+      </script>
+  </body>
+
+  <!-- Default page style -->
+  <style>
+    .title {
+      padding: 40px;
+      font: normal 34px/1 Verdana, Geneva, sans-serif;
+      color: black;
+      text-align: center;
+      letter-spacing: 7px;
+    }
+    .footer {
+      font: normal 14px/1 Verdana, Geneva, sans-serif;
+      padding: 10px;
+      color: black;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: #F0F0F0;
+    }
+
+    .editable {
+      width: 1000px;
+      height: 100px;
+      border: 1px solid #ccc;
+      padding: 5px;
+      resize: both;
+      overflow: auto;
+    }
+
+  </style>
+  <!-- Default page style -->
+</body>
+</html>
