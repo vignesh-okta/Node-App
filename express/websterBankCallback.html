@@ -36,7 +36,7 @@
   <!-- <div class="title">It would be awesome to have <br> a login form here</div> -->
   <script>
   function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
+    if (!url) url = window.location.origin;
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
         results = regex.exec(url);
@@ -77,7 +77,7 @@
   </div>
   <script type="text/javascript">
         var config = {
-          "redirectUri": window.location.href+"websterBank/websterBankCallback",
+          "redirectUri": window.location.origin+"websterBank/websterBankCallback",
           "issuer": "https://login.vigneshl.com/oauth2/default",
           "clientId": "0oaaev18b8ILWObsx2p7",
           "pkce": true,
@@ -135,7 +135,7 @@
                  console.log(err);
                  if(token) {
                  authClient.tokenManager.clear();
-                 window.location.replace('http://localhost:8080');
+                 window.location.replace(window.location.origin);
                  return;
                } else {
                   authClient.token.parseFromUrl({
@@ -223,7 +223,7 @@
                  console.log('Closed the session succesfully');
 
                  authClient.tokenManager.clear();
-                 window.location.replace('http://localhost');
+                 window.location.replace(window.location.origin);
                  return;
                })
                .catch(e => {
