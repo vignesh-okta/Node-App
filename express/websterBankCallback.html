@@ -77,8 +77,8 @@
   </div>
   <script type="text/javascript">
         var config = {
-          "redirectUri": "http://localhost/websterBank/websterBankCallback",
-          "issuer": "https://vigneshl.okta.com/oauth2/default",
+          "redirectUri": window.location.href+"websterBank/websterBankCallback",
+          "issuer": "https://login.vigneshl.com/oauth2/default",
           "clientId": "0oaaev18b8ILWObsx2p7",
           "pkce": true,
           "scopes": [
@@ -102,7 +102,7 @@
       //    if (res.status === 'ACTIVE') {
            // console.log('Welcome back, ' + res.login);
            var validationOptions = {
-             issuer: 'https://vigneshl.okta.com/oauth2/default'
+             issuer: 'https://login.vigneshl.com/oauth2/default'
            };
            authClient.tokenManager.get('idToken')
              .then(function(token) {
@@ -135,7 +135,7 @@
                  console.log(err);
                  if(token) {
                  authClient.tokenManager.clear();
-                 window.location.replace('http://localhost');
+                 window.location.replace('http://localhost:8080');
                  return;
                } else {
                   authClient.token.parseFromUrl({
