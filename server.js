@@ -17,8 +17,8 @@ app.get('/', function(req,res){
     //__dirname : It will resolve to your project folder.
   });
 
-app.get('/websterBank/websterBankCallback', function(req,res){
-res.sendFile(path.join(__dirname+'/express/websterBankCallback.html'));
+app.get('/oauth2/callback', function(req,res){
+res.sendFile(path.join(__dirname+'/express/callback.html'));
 //__dirname : It will resolve to your project folder.
 });
 // const server = https.createServer(app);
