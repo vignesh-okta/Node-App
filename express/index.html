@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <!-- <title>Welcome to Whirlpool</title> -->
+
 	<!-- Okta Sign-In Widget: Core js and css -->
 
   <style>
@@ -34,10 +34,10 @@
 
   <link href="https://global.oktacdn.com/okta-signin-widget/3.9.0/css/okta-sign-in.min.css" type="text/css" rel="stylesheet"/>
   <style>
-  /* body {
-     background-image: url("https://www.whirlpoolcorp.com/wp-content/uploads/mywhr-login-bg.jpg");
+  body {
+     background-image: url("https://getwallpapers.com/wallpaper/full/1/9/4/335210.jpg");
      background-size: cover;
-   } */
+   }
    </style>
 </head>
 <body>
@@ -57,15 +57,15 @@
   <div id="okta-login-container"></div>
 
   <div class="footer">
-    Copyright 2010-2020 Okta Ice. All rights reserved.
+    Copyright 2010-2020 Okta. All rights reserved.
   </div>
 
   <script type="text/javascript">
       var orgUrl = 'https://login.vigneshl.com';
       var oktaSignIn = new OktaSignIn({
       baseUrl: orgUrl,
-      logo: 'https://static.websteronline.com/edge/c/ep/77/wolstatic/images/warp/webster-monogram.svg',
-      redirectUri: window.location.origin+'/websterBank/websterBankCallback',
+      logo: 'https://martinsblog.dk/wp-content/uploads/2017/11/BusinessPartner_HPE_logo_color_small.png',
+      redirectUri: window.location.origin+'/oauth2/callback',
       clientId:'0oaaev18b8ILWObsx2p7',
       authParams: {
         issuer: 'https://login.vigneshl.com/oauth2/default',
@@ -74,7 +74,6 @@
         pkce: true,
         scopes: ['openid',"offline_access"]
       },
-      //logo: 'https://access.whirlpool.com/pics/login/whirlpool-corp.png',
       helpSupportNumber: '(123) 456-7890',
       language: 'en',
       i18n: {
@@ -91,23 +90,6 @@
         }
       },
 
-      helpLinks: {
-      //  help: 'https://access.whirlpool.com/pub/terms.html',
-    //    forgotPassword: 'https://access.whirlpool.com/wpass/wpass',
-        custom: [
-          {
-            text: 'Legal Notice',
-      //      href: 'https://www.whirlpoolcorp.com/legal-notice/',
-            // target: '_blank'
-          },
-          {
-            text: 'Privacy',
-          //  href: 'https://www.whirlpoolcorp.com/privacy-statement/',
-            // target: '_blank'
-          }
-        ]
-      },
-
       features: {
             rememberMe: true,
             smsRecovery: false,
@@ -118,24 +100,7 @@
             webauthn: true,
           //  passwordlessAuth: true
      	},
-      // transformUsername: function (username, operation) {
-      //   // This example will append the '@acme.com' domain if the user has
-      //   // not entered it
-      //   return username.indexOf('@whirlpool.com') > -1
-      //     ? username
-      //     : username + '@whirlpool.com';
-      // },
-      // preSubmit: function (postData, onSuccess, onFailure) {
-      //   // This example will add @companyname.com to the email if user fails to add it during registration
-      //   return username.indexOf('@whirlpool.com') > -1
-      //     ? username
-      //     : username + '@whirlpool.com';
-      //     //
-      //     // var error = {
-      //     //     "errorSummary": "Custom form level error"
-      //     //   };
-      //     // onFailure(error);
-      // },
+
       colors: {
         brand: '#BEBDBD'
       }
@@ -167,8 +132,6 @@
                  res.user.profile.login +
                  ") with customers."
                );
-               //https://terraform-p2.oktapreview.com/app/okta_org2org/exkq522azknTWn0rs0h7/sso/saml?RelayState=/home/okta_org2org/0oaqdt0rczi1bJkXA0h7/10873
-               // res.session.setCookieAndRedirect('https://identity-lululemon.oktapreview.com');
              }
            },
            function error(err) {
