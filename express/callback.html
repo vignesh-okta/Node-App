@@ -15,8 +15,9 @@
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <style>
    body {
-      background-image: url("img/bg.jpeg");
-      background-size: cover;
+    background-color: darkslategray;
+      /* background-image: url("bg.jpg"); */
+      /* background-size: cover; */
     }
     #okta-sign-in .okta-sign-in-header {
       background-color: #FFFFFF;
@@ -31,8 +32,8 @@
   </style>
 </head>
 <body>
-  <div class="title"></div>
-  <hr>
+  <!-- <div class="title"></div> -->
+  <!-- <hr> -->
   <!-- <div class="title">It would be awesome to have <br> a login form here</div> -->
   <script>
   function getParameterByName(name, url) {
@@ -46,20 +47,31 @@
   </script>
   <div id="okta-login-container"></div>
 
-  <div class="footer">
+  <!-- <div class="footer">
     Demo Application. Powered by Okta.
-  </div>
+  </div> -->
+  <div style="display: flex;  flex-flow: row;  max-width: fit-content;  ">
+  <h3 style="margin-left: 15px;color: white;">ID Token</h3>
+  <h3 style="margin-left: 55%; position: fixed;color: white;">Access Token</h3>
+</div>
+  <div style="display: flex;  flex-flow: row;  max-width: fit-content;  ">
 
-  <div class="editable" contenteditable="true"  id="idToken">
+
+  <div  style="width: 45%; margin-left: 1rem;margin-right: 2rem; box-shadow: 0 1px 11px 0 #45d291; white-space:pre-wrap; padding: 20px; background-color: #fff8dceb;" contenteditable="true"  id="idToken">
+    
   </div>
   <br>
-  <div class="editable" contenteditable="true" id="accessToken">
+
+  <div style="width: 45%; margin-right: 2rem; box-shadow: 0 1px 11px 0 #45d291; white-space:pre-wrap;padding: 20px; background-color: #fff8dceb;" contenteditable="true" id="accessToken">
+  </div>
+</div>
+  <br>
+  <h3 style="margin-left: 15px;color: white;">Refresh Token</h3>
+  <div style="width: 49%; margin-left: 1rem; box-shadow: 0 1px 11px 0 #45d291; height: auto; padding: 10px; background-color: #fff8dceb;" contenteditable="true" id="refreshToken">
   </div>
   <br>
-  <div class="editable" contenteditable="true" id="refreshToken">
-  </div>
 
-
+<div style="display: flex;  flex-flow: row;  max-width: fit-content;" >
   <div class="logoutForm">
     <table>
       <tr>
@@ -77,6 +89,7 @@
       </tr>
     </table>
   </div>
+</div>
   <script type="text/javascript">
         var config = {
           "redirectUri": window.location.origin+"/websterBank/websterBankCallback",
@@ -116,12 +129,13 @@
                  var myidToken = $("#idToken");
                  authClient.tokenManager.get('idToken')
                    .then(function(token) {
-                      myidToken.html(token.value);
+                     console.log(authClient.token.decode(token.value));
+                      myidToken.html(JSON.stringify(authClient.token.decode(token.value), undefined, 4));
                      })
                  var myaccessToken = $("#accessToken");
                  authClient.tokenManager.get('accessToken')
                    .then(function(token) {
-                      myaccessToken.html(token.value);
+                      myaccessToken.html(JSON.stringify(authClient.token.decode(token.value), null, "\t"));
                      })
                  var myrefreshToken = $("#refreshToken");
                  authClient.tokenManager.get('refreshToken')
@@ -168,12 +182,13 @@
                     // input.className = 'myCustomTextarea';
 
                     var myidToken = $("#idToken");
-
-                    myidToken.html(tokens.idToken.value);
+                    myidToken.html(JSON.stringify(authClient.token.decode(tokens.idToken.value), undefined, 4))
+                    // myidToken.html(tokens.idToken.value);
 
 
                     var myaccessToken = $("#accessToken");
-                    myaccessToken.html(tokens.accessToken.value);
+                    myaccessToken.html(JSON.stringify(authClient.token.decode(tokens.accessToken.value), undefined, 4))
+                    // myaccessToken.html(tokens.accessToken.value);
 
 
                     var myrefreshToken = $("#refreshToken");
