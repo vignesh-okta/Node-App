@@ -1,12 +1,12 @@
-// const https = require('https');
+const https = require('https');
 const express = require('express');
 const path = require('path');
 const app = express();
-// const fs = require('fs');
-// const options = {
-//   key: fs.readFileSync('../../../Documents/Certs/localhost/privkey.pem'),
-//   cert: fs.readFileSync('../../../Documents/Certs/localhost/cert.pem')
-// };
+const fs = require('fs');
+const options = {
+  key: fs.readFileSync('./express/private.pem'),
+  cert: fs.readFileSync('./express/cert.pem')
+};
 
 app.use(express.json());
 app.use(express.static("express"));
@@ -23,5 +23,8 @@ res.sendFile(path.join(__dirname+'/express/callback.html'));
 });
 // const server = https.createServer(app);
 var port = process.env.PORT || 8080;
-app.listen(port);
-console.debug('Server listening on port '+port);
+// app.listen(port);
+https.createServer(options, app).listen(port, function(){
+  console.debug('Server listening on port '+port);
+});
+
