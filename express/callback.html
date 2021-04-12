@@ -108,7 +108,8 @@
           },
           "tokenManager": {
             "autoRenew": false,
-            "storage": "localStorage"
+            "storage": "localStorage",
+            "expireEarlySeconds": "240"
           }
         }
       var authClient = new OktaAuth(config);
